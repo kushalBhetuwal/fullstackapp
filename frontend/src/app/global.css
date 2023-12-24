@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('../../styles/theme.css');
+
+body{
+    font-family:'Inter', sans-serif;
+}
+
+@layer utilities {
+    .flex-center{
+        @apply flex justify-center items-center
+    }
+    .flex-between{
+        @apply flex justify-between items-center
+    }
+    .flex-start{
+        @apply flex justify-start items-center
+    }
+    .primary-gradient {
+        background: linear-gradient(129deg, #ff7000 0%, #e2995f 100%);
+      }
+      
+   .primary-text-gradient {
+    background: linear-gradient(129deg, #ff7000 0%, #e2995f 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .margin-center{
+    margin:0 auto;
+  }
+  .btn {
+    @apply bg-light-800 !important;
+  }
+  .btn-secondary {
+    @apply bg-light-800  !important;
+  }
+  .btn-tertiary {
+    @apply bg-light-700 !important;
+  }
+  .hoverbutton {
+      @apply hover:bg-sky-500 hover:text-light-700 hover:border-2 hover:border-sky-500;
+    }
+  
+}

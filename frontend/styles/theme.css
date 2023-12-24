@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilites{
+    .bg850{
+        @apply bg-light-850
+    }
+    .text900{
+        @apply text-light-900
+    }
+    
+    .bg900{
+        @apply bg-light-900 bg-light-800
+    }
+   
+    .h1-bold{
+        @apply text-[24px] font-semibold leading-[31.2px]
+    }
+    .h3-bold{
+        @apply text-[20px] font-bold leading-[26px]
+    }
+
+}
