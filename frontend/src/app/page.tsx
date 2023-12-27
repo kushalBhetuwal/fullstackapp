@@ -30,6 +30,15 @@ const Home = () => {
     }, []);
     const createUser= async(e:React.FormEvent<HTMLFormElement>)=>{
       e.preventDefault();
+      const response = await fetch(`${apiurl}/users`, {
+        method: 'POST',
+        headers: {'Content-type': 'application/json'},
+        body: JSON.stringify(newUser)
+      })
+      const data = await response.json();
+      setUsers(users=>[...users, data])
+      setNewUser({name:'', email:""})
+      
       
     }
     const deleteUser = async(id:number)=>{
@@ -41,8 +50,6 @@ const Home = () => {
          if(!response.ok){
           throw new Error('response not okay')
          }
-         const data  = await response.json()
-         console.log(data);
          setUsers(users.filter(user=>user.id!==id))
         }
         catch(error){
