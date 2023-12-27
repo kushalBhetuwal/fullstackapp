@@ -1,19 +1,22 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
+import cors from "cors";
 
 const app = express();
 const prisma = new PrismaClient();
 
+// cors options
+const corsOptions = {
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type'],
+};
+
+app.use(cors(corsOptions));
+
+
 //json
 app.use(express.json()); //use json format to parse the request
-
-//cors
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods','GET, POST, PUT, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  next();
-});
 
 //test api
 app.get('/test', (req, res) => {
