@@ -56,6 +56,35 @@ const Home = () => {
           console.log(error);
         }
     }
+    const handleSubmit = async (e:React.FormEvent<HTMLFormElement>)=>{
+     e.preventDefault();
+     const form = e.target as HTMLFormElement
+     const formdata = new FormData(form);
+     const obj ={
+        id:formdata.get('id') ?? "",
+        name:formdata.get('name') ?? "",
+        email:formdata.get('email') ?? ""
+     };
+
+     try{
+      const response = await fetch(`${apiurl}/users/${obj.id}`, {
+        method:'PUT',
+        headers: {'Content-type': 'application/json'},
+        body:JSON.stringify(obj)
+       })
+       if(!response.ok){
+        throw new Error("not okay response")
+       }
+       const data = await response.json();
+       setUsers([data]);
+       form.reset();
+    
+     }
+     catch(error){
+      console.log(error);
+     }
+    
+    }
   return (
     <div className="flex justify-center items-center flex-col">
         <h1 className="text-[3rem]">User Management</h1>
@@ -63,6 +92,12 @@ const Home = () => {
         <input type="text" placeholder="Name" value={newUser.name} className="p-3 w-full rounded-[12px] focus:outline-none" onChange={(e)=>setNewUser({...newUser, name:e.target.value})} />
         <input type="text" placeholder="Email" value={newUser.email} className="p-3 w-full mt-4 rounded-[12px] focus:outline-none" onChange={(e)=>setNewUser({...newUser, email:e.target.value})}/>
         <button type="submit" className="bg-sky-700 hover:text-black text-white w-full p-2 h-[40%] mt-8 border-none rounded-[12px] hover:bg-yellow-300">Add User</button>
+      </form>
+      <form className="w-[25%] h-full bg-sky-400 flex flex-col items-center justify-center p-6 mt-4 rounded-lg" onSubmit={handleSubmit}>
+       <input type="text" className="p-3 w-full rounded-[12px] focus:outline-none" placeholder="ID" name="id" onChange={(e)=>setUpdateUser({...updateUser, id:e.target.value})}/>
+       <input type="text" className="p-3 w-full rounded-[12px] focus:outline-none mt-4" placeholder="Name" name="name" onChange={(e)=>setUpdateUser({...updateUser, name:e.target.value})}/>
+       <input type="text" className="p-3 w-full mt-4 rounded-[12px] focus:outline-none" placeholder="Email" name="email" onChange={(e)=>setUpdateUser({...updateUser, email:e.target.value})}/>
+       <button type="submit" className="bg-sky-700 hover:text-black text-white w-full p-2 h-[40%] mt-8 border-none rounded-[12px] hover:bg-yellow-300">Update User</button>
       </form>
         {
             users.map((user)=>{
