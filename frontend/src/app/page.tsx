@@ -13,6 +13,7 @@ const Home = () => {
     const [users, setUsers] = useState<User[]>([]);
     const [newUser,setNewUser] = useState({name:'', email:''});
     const [updateUser,setUpdateUser] = useState({id:'', name:'', email:''});
+    const[value, setValue] = useState("");
 
     // fetch the users
     useEffect(()=>{
@@ -83,11 +84,31 @@ const Home = () => {
      catch(error){
       console.log(error);
      }
-    
     }
+    const handleSearch = async(id:number)=>{
+      try{
+        const response = await fetch(`${apiurl}/users/${id}`, {
+          method:'GET',
+          headers:{'Content-Type': 'application/json'}
+        })
+        const data = await response.json();
+        setUsers(users=>[data])
+      }
+      catch(error){
+        console.log(error);
+      }
+    }
+  const onChangeHandler = (e:any)=>{
+      setValue(e.target.value)
+  }
   return (
     <div className="flex justify-center items-center flex-col">
         <h1 className="text-[3rem]">User Management</h1>
+        <div className="w-[25%] h-full bg-sky-400 flex flex-col items-center justify-center p-6 mt-4 rounded-lg">
+          <h1 className="text-[1.7rem] capitalize text-yellow-900 text-center">Search using Id</h1>
+        <input type="text" value={value} placeholder="Search using id" className="p-3 mt-4 w-full rounded-[12px] focus:outline-none" onChange={onChangeHandler}/>
+        <button type="submit" className="bg-sky-700 hover:text-black text-white w-full p-2 h-[40%] mt-8 border-none rounded-[12px] hover:bg-yellow-300" onClick ={()=>handleSearch(Number(value))}>Search User</button>
+      </div>
         <form className="w-[25%] h-full bg-sky-400 flex flex-col items-center justify-center p-4 mt-4 rounded-lg" onSubmit={createUser}>
         <input type="text" placeholder="Name" value={newUser.name} className="p-3 w-full rounded-[12px] focus:outline-none" onChange={(e)=>setNewUser({...newUser, name:e.target.value})} />
         <input type="text" placeholder="Email" value={newUser.email} className="p-3 w-full mt-4 rounded-[12px] focus:outline-none" onChange={(e)=>setNewUser({...newUser, email:e.target.value})}/>
