@@ -21,6 +21,7 @@ const Home = () => {
             try{
                 const response = await fetch(`${apiurl}/users`);
                 const data =  await response.json();
+                console.log(data);
                 setUsers(data);
             }
             catch(error){
@@ -77,7 +78,7 @@ const Home = () => {
         throw new Error("not okay response")
        }
        const data = await response.json();
-       setUsers([data]);
+       setUsers(users=>[data]);
        form.reset();
     
      }
@@ -85,19 +86,23 @@ const Home = () => {
       console.log(error);
      }
     }
-    const handleSearch = async(id:number)=>{
-      try{
-        const response = await fetch(`${apiurl}/users/${id}`, {
-          method:'GET',
-          headers:{'Content-Type': 'application/json'}
-        })
-        const data = await response.json();
-        setUsers(users=>[data])
+    const handleSearch = async (id: number) => {
+      try {
+          const response = await fetch(`${apiurl}/users/${id}`, {
+              method: 'GET',
+              headers: { 'Content-Type': 'application/json' }
+          });
+          if (!response.ok) {
+              throw new Error("not okay response");
+          }
+          const data = await response.json();
+          setUsers([data]); // Wrap data in an array
+          setValue('');
+      } catch (error) {
+          console.log(error);
       }
-      catch(error){
-        console.log(error);
-      }
-    }
+  };
+  
   const onChangeHandler = (e:any)=>{
       setValue(e.target.value)
   }
@@ -118,7 +123,7 @@ const Home = () => {
        <input type="text" className="p-3 w-full rounded-[12px] focus:outline-none" placeholder="ID" name="id" onChange={(e)=>setUpdateUser({...updateUser, id:e.target.value})}/>
        <input type="text" className="p-3 w-full rounded-[12px] focus:outline-none mt-4" placeholder="Name" name="name" onChange={(e)=>setUpdateUser({...updateUser, name:e.target.value})}/>
        <input type="text" className="p-3 w-full mt-4 rounded-[12px] focus:outline-none" placeholder="Email" name="email" onChange={(e)=>setUpdateUser({...updateUser, email:e.target.value})}/>
-       <button type="submit" className="bg-sky-700 hover:text-black text-white w-full p-2 h-[40%] mt-8 border-none rounded-[12px] hover:bg-yellow-300">Update User</button>
+       <button type="submit" className="bg-green-600 hover:text-black text-white w-full p-2 h-[40%] mt-8 border-none rounded-[12px] hover:bg-yellow-300">Update User</button>
       </form>
         {
             users.map((user)=>{
